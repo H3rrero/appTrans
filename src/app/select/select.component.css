@@ -1,0 +1,49 @@
+.titlesection {
+    font-size: 1.2rem;
+    font-weight: bold;
+    flex: 1 1 0%;
+ } 
+.separator{
+    border-bottom: 1px solid #CFCECE;
+}
+.separator > div{
+    padding: 0.6rem 1.2rem;
+    
+}
+.separator >div:hover{
+    background-color: #A2A1A1;
+    color: rgb(255, 255, 255);
+}
+.separator > div:after {
+    clear:both;
+    content:'';
+    display:block;
+}
+.separator > div > .titlesection  {
+    float:left;
+}
+.separator > div > i {
+    float:right;
+    transition:all 0.25s linear;
+}
+.separator > div.open > i {
+    transform:rotate(-90deg);
+}
+.separator >ul{
+    background-color: rgb(255, 255, 255);
+    padding-left: 0;
+    margin-top: 0;
+}
+.lista{
+    line-height: 2rem;
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+.lista > span{
+    margin-left: 2rem;
+}
+.lista:hover{
+    background-color: #A2A1A1;
+    color: rgb(255, 255, 255);
+}

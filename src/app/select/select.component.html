@@ -1,0 +1,9 @@
+<div class="separator">
+    <div (click)="toggleSelect()" [class.open]="opened">
+        <span class="titlesection">{{selectedValue}}</span>
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+    </div>
+    <ul *ngIf="opened">
+        <li class="lista" *ngFor="let l of leng" (click)="selectValue(l)"><span>{{l}}</span></li>
+    </ul>
+</div>
