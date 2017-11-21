@@ -10,7 +10,7 @@ export class TraductorComponent implements OnInit {
   config;
   content;
   constructor() {
-    this.config = { lineNumbers: true, mode: 'text/html' };
+    this.config = { lineNumbers: true, mode: 'text/xml', theme:"base16-light" };
     this.content = `// ... some code !
 package main
 
