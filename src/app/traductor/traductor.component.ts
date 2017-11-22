@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import 'codemirror/mode/xml/xml';
+import { ViewChild } from '@angular/core/src/metadata/di';
+import { CodemirrorComponent } from 'ng2-codemirror/lib/codemirror.component';
 @Component({
   selector: 'app-traductor',
   templateUrl: './traductor.component.html',
@@ -9,6 +11,8 @@ export class TraductorComponent implements OnInit {
   title = "traductor";
   config;
   content;
+  
+
   constructor() {
     this.config = { lineNumbers: true, mode: 'text/xml', theme:"base16-light" };
     this.content = `// ... some code !
