@@ -1,38 +1,41 @@
+app-select {
+  color: #A2A1A1;
+  cursor: pointer;
+}
+
+.editor {
+  margin-left: 200px;
+  width: calc(100vw - 200px);
+}
 
 .sidenav {
-    height: 100%;
-    width: 200px;
-    position: relative;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgb(255, 255, 255);
-    overflow-x: hidden;
-    padding-top: 20px;
-    box-shadow: 3px 0 5px rgba(30,30,30,0.35);
+  background-color: rgb(255, 255, 255);
+  box-shadow: 3px 0 5px rgba(30, 30, 30, 0.35);
+  height: 100%;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  position: fixed;
+  top: 0;
+  width: 200px;
+  z-index: 1;
 }
-
-
 
 .sidenav a:hover {
-    color: #f1f1f1;
+  color: #f1f1f1;
 }
 
-
-app-select {
-    color:#A2A1A1;
-    cursor: pointer;
-}
-app-traductor{
-    position: absolute;
-    left: 0;
-    height: 100%;
-    width: 45%;
-    top: 0;
-    margin-left: 200px;
+.traductor {
+  float: left;
+  height: 100vh;
+  width: 50%;
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
 }
