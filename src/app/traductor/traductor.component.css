@@ -1,3 +1,5 @@
 :host ::ng-deep .CodeMirror {
-    height: 100%;
+    float: left;
+    width: 50%;
+    height: 100vh;
 }

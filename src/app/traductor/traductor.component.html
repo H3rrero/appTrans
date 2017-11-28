@@ -1,1 +1,2 @@
-<codemirror [(ngModel)]="content" [config]="config"></codemirror>
+<codemirror [(ngModel)]="content" [config]="config" (ngModelChange)="importCode()"></codemirror>
+<codemirror [(ngModel)]="salida" [config]="config" ></codemirror>
