@@ -2,6 +2,9 @@ import { Component, OnInit,Input } from '@angular/core';
 import 'codemirror/mode/xml/xml';
 import { ViewChild } from '@angular/core/src/metadata/di';
 import { CodemirrorComponent } from 'ng2-codemirror/lib/codemirror.component';
+import { Punto } from '../model/impl/Punto.model';
+import { Track } from '../model/impl/Track.model';
+import { GPXprocessing } from '../model/impl/processing/GPXprocessing.model';
 @Component({
   selector: 'app-traductor',
   templateUrl: './traductor.component.html',
@@ -42,8 +45,9 @@ func generate(ch chan<- int) {
   }
 
   importCode() {
-     const xml = (new DOMParser()).parseFromString(this.content, 'application/xml');
-      console.log(xml);
+     let gpx = new GPXprocessing();
+     let track =gpx.from(this.content);
+     this.salida = gpx.to(track);
  
   }
 }
