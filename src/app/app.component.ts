@@ -7,6 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  from:string ="From";
-  to:string = "To";
+  from:string;
+  to:string;
+
+  onSelectFrom(from) {
+    this.from=from;
+  }
+  onSelectTo(to){
+    this.to=to;
+  }
 }

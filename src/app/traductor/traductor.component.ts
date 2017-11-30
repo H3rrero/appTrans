@@ -5,12 +5,22 @@ import { CodemirrorComponent } from 'ng2-codemirror/lib/codemirror.component';
 import { Punto } from '../model/impl/Punto.model';
 import { Track } from '../model/impl/Track.model';
 import { GPXprocessing } from '../model/impl/processing/GPXprocessing.model';
+import { KMLprocessing } from '../model/impl/processing/KMLprocessing.model';
+
+const processors = {
+  "GPX": new GPXprocessing(),
+  "KML": new KMLprocessing()
+}
+
 @Component({
   selector: 'app-traductor',
   templateUrl: './traductor.component.html',
   styleUrls: ['./traductor.component.css']
 })
 export class TraductorComponent implements OnInit {
+  
+  @Input() from:string;
+  @Input() to:string;
   title = "traductor";
   config:object;
   content:string;
@@ -42,12 +52,13 @@ func generate(ch chan<- int) {
   }
 
   ngOnInit() {
+
   }
 
   importCode() {
-     let gpx = new GPXprocessing();
-     let track =gpx.from(this.content);
-     this.salida = gpx.to(track);
- 
+      const toProcessor = processors[this.to];
+      const fromProcessor = processors[this.from];
+     this.salida = toProcessor.to(fromProcessor.from(this.content));
   }
+
 }
