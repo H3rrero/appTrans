@@ -56,6 +56,7 @@ func generate(ch chan<- int) {
   }
 
   importCode() {
+    console.log(this.to);
       const toProcessor = processors[this.to];
       const fromProcessor = processors[this.from];
      this.salida = toProcessor.to(fromProcessor.from(this.content));

@@ -82,11 +82,13 @@ ${this.generatePointsXml(track.puntos)}
         return xml;
     }
     generatePointsXml(points: Punto[]) {
-        return points.map((p) =>
-            `                   <trkpt lat="${p.latitud}" lon="${p.longitud}">
-                        <ele>${p.elevacion}</ele>
-                        ${this.generateTime(p.time)}
-                   </trkpt>\n`).join('');
+        return points.map((p) => {
+            if (p.latitud != undefined)
+               return `                   <trkpt lat="${p.latitud}" lon="${p.longitud}">
+            <ele>${p.elevacion}</ele>
+            ${this.generateTime(p.time)}
+       </trkpt>\n`;
+        }).join('');
     }
     generateWayPointsXml(points: WayPoint[]) {
         return points.map((p) =>
@@ -99,6 +101,6 @@ ${this.generatePointsXml(track.puntos)}
                    </wpt>\n`).join('');
     }
     generateTime(time) {
-       return time !== 'noTime' ? `<time>${time}</time>` : '';
+        return time !== 'noTime' ? `<time>${time}</time>` : '';
     }
 }
