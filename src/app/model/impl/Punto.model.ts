@@ -2,10 +2,11 @@ export class Punto {
     elevacion: number;
     latitud: number;
     longitud: number;
-
-    constructor(elevacion, latitud, longitud) {
+    time:string;
+    constructor(elevacion, latitud, longitud, time) {
         this.elevacion = elevacion;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.time = time;
     }
 }

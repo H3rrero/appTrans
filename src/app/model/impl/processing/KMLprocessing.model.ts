@@ -1,27 +1,30 @@
 import { TrackProcessing } from "../../TrackProcessing.interface";
 import { Track } from "../Track.model";
 import { Punto } from "../Punto.model";
+import { WayPoint } from "../WayPoint.model";
 
 export class KMLprocessing implements TrackProcessing {
 
     from(text: string): Track {
         let puntos: Punto[] = [];
+        let wayPoints: WayPoint[] = [];
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
-        console.log(xml)
+        let wpt = xml.getElementsByTagName("Point");
+        console.log(wpt);
         let puntosXMl = xml.getElementsByTagName("MultiGeometry")[0].getElementsByTagName("LineString")[0].getElementsByTagName("coordinates")[0].textContent;
         let tuplas = puntosXMl.split(" ");
         let name = xml.getElementsByTagName("name")[0].textContent;
         let descripcion = xml.getElementsByTagName("description")[0].textContent;
         let autor = "anonimo";
-        console.log(puntosXMl)
         for (let i = 0; i < tuplas.length; i++) {
-            const puntoXML =tuplas[i].split(",");
+            const puntoXML = tuplas[i].split(",");
             const lat = puntoXML[1];
             const lon = puntoXML[0];
             const ele = puntoXML[2];
-            puntos.push(new Punto(ele, lat, lon));
+            let time = "noTime";
+            puntos.push(new Punto(ele, lat, lon,time));
         }
-        return new Track(puntos, autor, name);
+        return new Track(puntos, autor, name, wayPoints);
     }
     to(track: Track): string { return ""; }
 }
