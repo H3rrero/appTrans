@@ -16,10 +16,12 @@ export class KMLprocessing implements TrackProcessing {
         let descripcion = xml.getElementsByTagName("description")[0].textContent;
         let autor = "anonimo";
         for (let i = 0; i < wpt.length; i++) {
-            let datos:string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
+            let datos: string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
             const lat = datos[1];
             const lon = datos[0];
-            let ele = datos[2];
+            let ele = "0";
+            if (datos[2] != undefined)
+                ele = datos[2];
             let nombre = "Waypoint";
             let desc = "Waypoint description";
             let time = "noTime";
@@ -30,11 +32,144 @@ export class KMLprocessing implements TrackProcessing {
             const puntoXML = tuplas[i].split(",");
             const lat = puntoXML[1];
             const lon = puntoXML[0];
-            const ele = puntoXML[2];
+            let ele = "0";
+            if (puntoXML[2] != undefined)
+                ele = puntoXML[2];
             let time = "noTime";
-            puntos.push(new Punto(ele, lat, lon,time));
+            puntos.push(new Punto(ele, lat, lon, time));
         }
         return new Track(puntos, autor, name, wayPoints);
     }
-    to(track: Track): string { return ""; }
+    to(track: Track): string {
+        let xml: string =
+            `<?xml version="1.0" encoding="UTF-8"?>
+        <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+        <Folder>
+            <name>Lugares temporales</name>
+            <open>1</open>
+            <Folder>
+                <name>Lugares temporales</name>
+                <open>1</open>
+            </Folder>
+            <Document>
+                <name>GPS device</name>
+                <snippet>Created ${Date()}</snippet>
+                <LookAt>
+                    <gx:TimeSpan>
+                        <begin>${track.puntos[0].time}</begin>
+                        <end>${track.puntos[track.puntos.length - 1].time}</end>
+                    </gx:TimeSpan>
+                    <longitude>${track.puntos[0].longitud}</longitude>
+                    <latitude>${track.puntos[0].latitud}</latitude>
+                    <altitude>0</altitude>
+                    <heading>0</heading>
+                    <tilt>0</tilt>
+                    <range>4372.51637</range>
+                </LookAt>
+                <StyleMap id="multiTrack">
+                    <Pair>
+                        <key>normal</key>
+                        <styleUrl>#multiTrack_n</styleUrl>
+                    </Pair>
+                    <Pair>
+                        <key>highlight</key>
+                        <styleUrl>#multiTrack_h</styleUrl>
+                    </Pair>
+                </StyleMap>
+                <StyleMap id="waypoint">
+                    <Pair>
+                        <key>normal</key>
+                        <styleUrl>#waypoint_n</styleUrl>
+                    </Pair>
+                    <Pair>
+                        <key>highlight</key>
+                        <styleUrl>#waypoint_h</styleUrl>
+                    </Pair>
+                </StyleMap>
+                <Style id="multiTrack_n">
+                    <IconStyle>
+                        <Icon>
+                            <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+                        </Icon>
+                    </IconStyle>
+                    <LineStyle>
+                        <color>99ffac59</color>
+                        <width>6</width>
+                    </LineStyle>
+                </Style>
+                <Style id="multiTrack_h">
+                    <IconStyle>
+                        <scale>1.2</scale>
+                        <Icon>
+                            <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+                        </Icon>
+                    </IconStyle>
+                    <LineStyle>
+                        <color>99ffac59</color>
+                        <width>8</width>
+                    </LineStyle>
+                </Style>
+                <Style id="waypoint_h">
+                    <IconStyle>
+                        <scale>1.2</scale>
+                        <Icon>
+                            <href>http://maps.google.com/mapfiles/kml/pal4/icon61.png</href>
+                        </Icon>
+                    </IconStyle>
+                </Style>
+                <Style id="waypoint_n">
+                    <IconStyle>
+                        <Icon>
+                            <href>http://maps.google.com/mapfiles/kml/pal4/icon61.png</href>
+                        </Icon>
+                    </IconStyle>
+                </Style>
+                <Folder>
+                    <name>Waypoints</name>
+                    ${this.generateWaypoints(track.waypoints)}
+                </Folder>
+                <Folder>
+                    <name>Tracks</name>
+                    <Placemark>
+                        <name>${track.nombre}</name>
+                        <styleUrl>#multiTrack</styleUrl>
+                        <gx:Track>
+                            ${this.generateTimes(track.puntos)}
+                            ${this.generateCoordinates(track.puntos)}
+                        </gx:Track>
+                    </Placemark>
+                </Folder>
+            </Document>
+        </Folder>
+        </kml>`;
+
+
+
+        return xml;
+    }
+
+    generateCoordinates(pts: Punto[]): string {
+        return pts.map((p) =>
+            `<gx:coord>${p.longitud},${p.latitud},${p.elevacion}</gx:coord>
+            `).join('');
+    }
+    generateTimes(pts: Punto[]): string {
+        return pts.map((p) =>
+            `<when>${p.time}</when>
+            `).join('');
+    }
+    generateWaypoints(pts: WayPoint[]): string {
+        return pts.map((p) =>
+            `<Placemark>
+                <TimeStamp><when>${p.time}</when>
+                </TimeStamp>
+                <name>${p.nombre}</name>
+                <description>${p.descripcion}</description>
+                <styleUrl>#waypointStyle</styleUrl>
+                <Point>
+                    <coordinates>${p.longitud},${p.latitud},${p.elevacion}</coordinates>
+                </Point>
+            </Placemark>`).join('');
+    }
+
 }

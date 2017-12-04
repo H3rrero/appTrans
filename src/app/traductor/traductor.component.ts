@@ -25,6 +25,8 @@ export class TraductorComponent implements OnInit {
   config:object;
   content:string;
   salida:string;
+  successMessage:boolean =false;
+  message:"Selecciona un formato de entrada y otro de salida"
   constructor() {
     this.config = { lineNumbers: true, mode: 'text/xml', theme: "base16-light" };
     this.content = `// ... some code !
@@ -56,7 +58,10 @@ func generate(ch chan<- int) {
   }
 
   importCode() {
-    console.log(this.to);
+    if(this.to =="To" || this.from == "From")
+      this.successMessage = true;
+    else
+      this.successMessage = false;
       const toProcessor = processors[this.to];
       const fromProcessor = processors[this.from];
      this.salida = toProcessor.to(fromProcessor.from(this.content));

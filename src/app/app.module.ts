@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { SelectComponent } from './select/select.component';
 import { TraductorComponent } from './traductor/traductor.component';
 import { CodemirrorModule } from 'ng2-codemirror';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { CodemirrorModule } from 'ng2-codemirror';
   imports: [
     BrowserModule,
     FormsModule,
-    CodemirrorModule 
+    CodemirrorModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
