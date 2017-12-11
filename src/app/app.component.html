@@ -3,5 +3,6 @@
     <app-select [leng]="['GPX','KML']" [selectedValue]="'To'" (onSelect)="onSelectTo($event)"></app-select>
 </div>
 <main class="editor">
+    <app-notificacion></app-notificacion>
     <app-traductor class="traductor" [from]="from" [to]="to"></app-traductor>
 </main>

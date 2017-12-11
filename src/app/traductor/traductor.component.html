@@ -1,3 +1,3 @@
-<ngb-alert *ngIf="successMessage" type="danger" (close)="successMessage = false">{{ message }}</ngb-alert>
-<codemirror [(ngModel)]="content" [config]="config" (ngModelChange)="importCode()"></codemirror>
-<codemirror [(ngModel)]="salida" [config]="config" ></codemirror>
+
+<codemirror [(ngModel)]="content" [config]="config" (ngModelChange)="importCode()" ></codemirror>
+<codemirror [(ngModel)]="salida" [config]="configSalida" ></codemirror>

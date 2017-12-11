@@ -3,13 +3,13 @@ import { WayPoint } from "./WayPoint.model";
 
 export class Track {
     autor: string;
-    puntos: Punto[];
     nombre: string;
+    puntos: Punto[];
     waypoints:WayPoint[];
     constructor(puntos, autor, nombre, waypoints) {
-        this.puntos = puntos;
         this.autor = autor;
         this.nombre = nombre;
+        this.puntos = puntos;
         this.waypoints = waypoints;
     }
 }

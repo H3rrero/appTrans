@@ -6,43 +6,49 @@ import { WayPoint } from "../WayPoint.model";
 export class KMLprocessing implements TrackProcessing {
 
     from(text: string): Track {
-        let puntos: Punto[] = [];
-        let wayPoints: WayPoint[] = [];
-        const xml = (new DOMParser()).parseFromString(text, 'application/xml');
-        let wpt = xml.getElementsByTagName("Point");
-        let puntosXMl = xml.getElementsByTagName("MultiGeometry")[0].getElementsByTagName("LineString")[0].getElementsByTagName("coordinates")[0].textContent;
-        let tuplas = puntosXMl.split(" ");
-        let name = xml.getElementsByTagName("name")[0].textContent;
-        let descripcion = xml.getElementsByTagName("description")[0].textContent;
         let autor = "anonimo";
-        for (let i = 0; i < wpt.length; i++) {
-            let datos: string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
-            const lat = datos[1];
-            const lon = datos[0];
-            let ele = "0";
-            if (datos[2] != undefined)
-                ele = datos[2];
-            let nombre = "Waypoint";
-            let desc = "Waypoint description";
-            let time = "noTime";
-            let cmt = "Waypoint coment";
-            wayPoints.push(new WayPoint(nombre, lat, lon, ele, desc, time, cmt));
+        let puntos: Punto[] = [];
+        const xml = (new DOMParser()).parseFromString(text, 'application/xml');
+        let wayPoints: WayPoint[] = [];
+        if (this.checkErrors(xml)["respuesta"]) {
+            let descripcion = xml.getElementsByTagName("description")[0].textContent;
+            let name = xml.getElementsByTagName("name")[0].textContent;
+            let puntosXMl = xml.getElementsByTagName("MultiGeometry")[0].getElementsByTagName("LineString")[0].getElementsByTagName("coordinates")[0].textContent;
+            let tuplas = puntosXMl.split(" ");
+            let wpt = xml.getElementsByTagName("Point");
+            for (let i = 0; i < wpt.length; i++) {
+                let cmt = "Waypoint coment";
+                let datos: string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
+                let desc = "Waypoint description";
+                let ele = "0";
+                const lat = datos[1];
+                const lon = datos[0];
+                let nombre = "Waypoint";
+                let time = "noTime";
+                if (datos[2] != undefined)
+                    ele = datos[2];
+                wayPoints.push(new WayPoint(nombre, lat, lon, ele, desc, time, cmt));
+            }
+            for (let i = 0; i < tuplas.length; i++) {
+                const puntoXML = tuplas[i].split(",");
+                const lat = puntoXML[1];
+                const lon = puntoXML[0];
+                let ele = "0";
+                if (puntoXML[2] != undefined)
+                    ele = puntoXML[2];
+                let time = "noTime";
+                puntos.push(new Punto(ele, lat, lon, time));
+            }
+            return new Track(puntos, autor, name, wayPoints);
+        } else {
+            alert(this.checkErrors(xml)["mensaje"]);
+            return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
         }
-        for (let i = 0; i < tuplas.length; i++) {
-            const puntoXML = tuplas[i].split(",");
-            const lat = puntoXML[1];
-            const lon = puntoXML[0];
-            let ele = "0";
-            if (puntoXML[2] != undefined)
-                ele = puntoXML[2];
-            let time = "noTime";
-            puntos.push(new Punto(ele, lat, lon, time));
-        }
-        return new Track(puntos, autor, name, wayPoints);
     }
     to(track: Track): string {
-        let xml: string =
-            `<?xml version="1.0" encoding="UTF-8"?>
+        if (track.nombre != "-1") {
+            let xml: string =
+                `<?xml version="1.0" encoding="UTF-8"?>
         <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
         <Folder>
             <name>Lugares temporales</name>
@@ -142,10 +148,10 @@ export class KMLprocessing implements TrackProcessing {
             </Document>
         </Folder>
         </kml>`;
-
-
-
-        return xml;
+            return xml;
+        } else {
+            return track.autor;
+        }
     }
 
     generateCoordinates(pts: Punto[]): string {
@@ -170,6 +176,22 @@ export class KMLprocessing implements TrackProcessing {
                     <coordinates>${p.longitud},${p.latitud},${p.elevacion}</coordinates>
                 </Point>
             </Placemark>`).join('');
+    }
+
+    checkErrors(xml): object {
+        if (xml.childNodes[0].textContent != null) {
+            if (xml.childNodes[0].textContent.indexOf("error") == -1) {
+                if (xml.childNodes[0]["tagName"] == "kml") {
+                    return { respuesta: true, mensaje: "KML bien formado", error: "ninguno" };
+                } else {
+                    return { respuesta: false, mensaje: "La entrada tiene que estar en formato KML", error: " " };
+                }
+            } else {
+                return { respuesta: false, mensaje: "Documento no válido", error: xml.childNodes[0].textContent };
+            }
+        } else {
+            return { respuesta: false, mensaje: "Documento no válido", error: xml.childNodes[0].textContent };
+        }
     }
 
 }

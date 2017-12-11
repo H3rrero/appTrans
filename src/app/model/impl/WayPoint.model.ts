@@ -1,18 +1,18 @@
 export class WayPoint{
-    nombre:string;
+    cmt:string;
+    descripcion:string;
+    elevacion:number;
     latitud:number;
     longitud:number;
-    elevacion:number;
-    descripcion:string;
+    nombre:string;
     time:string;
-    cmt:string;
     constructor(nombre,latitud,longitud,elevacion,descripcion,time,cmt){
-        this.nombre = nombre;
+        this.cmt = cmt;
+        this.descripcion = descripcion;
+        this.elevacion = elevacion;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.elevacion = elevacion;
-        this.descripcion = descripcion;
+        this.nombre = nombre;
         this.time = time;
-        this.cmt = cmt;
     }
 }

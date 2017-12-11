@@ -5,21 +5,21 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { SelectComponent } from './select/select.component';
 import { TraductorComponent } from './traductor/traductor.component';
+import { NotificacionComponent } from './notificacion/notificacion.component';
 import { CodemirrorModule } from 'ng2-codemirror';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SelectComponent,
-    TraductorComponent
+    TraductorComponent,
+    NotificacionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    CodemirrorModule,
-    NgbModule.forRoot()
+    CodemirrorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
