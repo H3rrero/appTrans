@@ -10,6 +10,7 @@ export class KMLprocessing implements TrackProcessing {
         let puntos: Punto[] = [];
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
         let wayPoints: WayPoint[] = [];
+        console.log(xml);
         if (this.checkErrors(xml)["respuesta"]) {
             let descripcion = xml.getElementsByTagName("description")[0].textContent;
             let name = xml.getElementsByTagName("name")[0].textContent;
@@ -41,7 +42,6 @@ export class KMLprocessing implements TrackProcessing {
             }
             return new Track(puntos, autor, name, wayPoints);
         } else {
-            alert(this.checkErrors(xml)["mensaje"]);
             return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
         }
     }
@@ -184,13 +184,43 @@ export class KMLprocessing implements TrackProcessing {
                 if (xml.childNodes[0]["tagName"] == "kml") {
                     return { respuesta: true, mensaje: "KML bien formado", error: "ninguno" };
                 } else {
-                    return { respuesta: false, mensaje: "La entrada tiene que estar en formato KML", error: " " };
+                    return { respuesta: false, mensaje: "La entrada tiene que estar en formato KML", error: "La entrada tiene que estar en formato KML" };
                 }
             } else {
                 return { respuesta: false, mensaje: "Documento no válido", error: xml.childNodes[0].textContent };
             }
         } else {
             return { respuesta: false, mensaje: "Documento no válido", error: xml.childNodes[0].textContent };
+        }
+    }
+
+    fromOtherFormat(text:string){
+        let autor = "anonimo";
+        let name = "track";
+        let descripcion = "description";
+        let puntos: Punto[] = [];
+        const xml = (new DOMParser()).parseFromString(text, 'application/xml');
+        let wayPoints: WayPoint[] = [];
+        console.log(xml);
+        if (this.checkErrors(xml)["respuesta"]) {
+             descripcion = xml.getElementsByTagName("description")[0].textContent;
+             name = xml.getElementsByTagName("name")[0].textContent;
+            let whenPoint = xml.getElementsByTagName("when");
+            let coordPoint = xml.getElementsByTagName("gx:coord");
+            let wpt = xml.getElementsByTagName("Point");
+            for (let i = 0; i < coordPoint.length; i++) {
+                const puntoXML = coordPoint[i].textContent.split(" ");
+                const lat = puntoXML[1];
+                const lon = puntoXML[0];
+                let ele = "0";
+                if (puntoXML[2] != undefined)
+                    ele = puntoXML[2];
+                let time = "noTime";
+                puntos.push(new Punto(ele, lat, lon, time));
+            }
+            return new Track(puntos, autor, name, wayPoints);
+        } else {
+            return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
         }
     }
 

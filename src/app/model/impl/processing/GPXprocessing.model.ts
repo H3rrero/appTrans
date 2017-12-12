@@ -51,7 +51,6 @@ export class GPXprocessing implements TrackProcessing {
             }
             return new Track(puntos, autor, name.textContent, wayPoints);
         } else {
-            alert(this.checkErrors(xml)["mensaje"]);
             return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
         }
 
@@ -119,7 +118,7 @@ ${this.generatePointsXml(track.puntos)}
                 if (xml.childNodes[0]["tagName"] == "gpx") {
                     return { respuesta: true, mensaje: "GPX bien formado", error: "ninguno" };
                 } else {
-                    return { respuesta: false, mensaje: "La entrada tiene que estar en formato GPX", error: " " };
+                    return { respuesta: false, mensaje: "La entrada tiene que estar en formato GPX", error: "La entrada tiene que estar en formato GPX" };
                 }
             } else {
                 return { respuesta: false, mensaje: "Documento no válido", error: xml.childNodes[0].textContent };

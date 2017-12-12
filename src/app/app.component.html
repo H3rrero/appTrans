@@ -1,8 +1,8 @@
 <div class="sidenav">
-    <app-select [leng]="['GPX','KML']"  [selectedValue]="'From'" (onSelect)="onSelectFrom($event)"></app-select>
-    <app-select [leng]="['GPX','KML']" [selectedValue]="'To'" (onSelect)="onSelectTo($event)"></app-select>
+    <app-select title="Lenguaje de entrada" [leng]="['GPX','KML']"  [selectedValue]="'From'" (onSelect)="onSelectFrom($event)"></app-select>
+    <app-select title="Lenguaje de salida" [leng]="['GPX','KML']" [selectedValue]="'To'" (onSelect)="onSelectTo($event)"></app-select>
 </div>
 <main class="editor">
-    <app-notificacion></app-notificacion>
+   
     <app-traductor class="traductor" [from]="from" [to]="to"></app-traductor>
 </main>
