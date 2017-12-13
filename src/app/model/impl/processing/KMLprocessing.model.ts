@@ -6,43 +6,11 @@ import { WayPoint } from "../WayPoint.model";
 export class KMLprocessing implements TrackProcessing {
 
     from(text: string): Track {
-        let autor = "anonimo";
-        let puntos: Punto[] = [];
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
-        let wayPoints: WayPoint[] = [];
-        console.log(xml);
-        if (this.checkErrors(xml)["respuesta"]) {
-            let descripcion = xml.getElementsByTagName("description")[0].textContent;
-            let name = xml.getElementsByTagName("name")[0].textContent;
-            let puntosXMl = xml.getElementsByTagName("MultiGeometry")[0].getElementsByTagName("LineString")[0].getElementsByTagName("coordinates")[0].textContent;
-            let tuplas = puntosXMl.split(" ");
-            let wpt = xml.getElementsByTagName("Point");
-            for (let i = 0; i < wpt.length; i++) {
-                let cmt = "Waypoint coment";
-                let datos: string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
-                let desc = "Waypoint description";
-                let ele = "0";
-                const lat = datos[1];
-                const lon = datos[0];
-                let nombre = "Waypoint";
-                let time = "noTime";
-                if (datos[2] != undefined)
-                    ele = datos[2];
-                wayPoints.push(new WayPoint(nombre, lat, lon, ele, desc, time, cmt));
-            }
-            for (let i = 0; i < tuplas.length; i++) {
-                const puntoXML = tuplas[i].split(",");
-                const lat = puntoXML[1];
-                const lon = puntoXML[0];
-                let ele = "0";
-                if (puntoXML[2] != undefined)
-                    ele = puntoXML[2];
-                let time = "noTime";
-                puntos.push(new Punto(ele, lat, lon, time));
-            }
-            return new Track(puntos, autor, name, wayPoints);
-        } else {
-            return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
+        if(xml.getElementsByTagName("gx:coord")[0]!= undefined){
+            return this.fromFormatNew(text);
+        }else{
+            return this.fromFormatOld(text);
         }
     }
     to(track: Track): string {
@@ -194,22 +162,79 @@ export class KMLprocessing implements TrackProcessing {
         }
     }
 
-    fromOtherFormat(text:string){
+    fromFormatNew(text:string){
         let autor = "anonimo";
         let name = "track";
         let descripcion = "description";
         let puntos: Punto[] = [];
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
         let wayPoints: WayPoint[] = [];
-        console.log(xml);
         if (this.checkErrors(xml)["respuesta"]) {
+            console.log(xml.getElementsByTagName("gx:Track")[0].getElementsByTagName("gx:coord"));
              descripcion = xml.getElementsByTagName("description")[0].textContent;
              name = xml.getElementsByTagName("name")[0].textContent;
             let whenPoint = xml.getElementsByTagName("when");
-            let coordPoint = xml.getElementsByTagName("gx:coord");
+            let coordPoint = xml.getElementsByTagName("gx:Track")[0].getElementsByTagName("gx:coord");
             let wpt = xml.getElementsByTagName("Point");
+            for (let i = 0; i < wpt.length; i++) {
+                let cmt = "Waypoint coment";
+                let datos: string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
+                let desc = "Waypoint description";
+                let ele = "0";
+                const lat = datos[1];
+                const lon = datos[0];
+                let nombre = "Waypoint";
+                let time = "noTime";
+                if (datos[2] != undefined)
+                    ele = datos[2];
+                wayPoints.push(new WayPoint(nombre, lat, lon, ele, desc, time, cmt));
+            }
             for (let i = 0; i < coordPoint.length; i++) {
                 const puntoXML = coordPoint[i].textContent.split(" ");
+                const lat = puntoXML[1];
+                const lon = puntoXML[0];
+                let ele = "0";
+                let time = "noTime";
+                if(whenPoint[i] != undefined)
+                    time = whenPoint[i].textContent;
+                if (puntoXML[2] != undefined)
+                    ele = puntoXML[2];
+                puntos.push(new Punto(ele, lat, lon, time));
+            }
+            return new Track(puntos, autor, name, wayPoints);
+        } else {
+            return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
+        }
+    }
+
+    fromFormatOld(text: string): Track {
+        let autor = "anonimo";
+        let puntos: Punto[] = [];
+        let name = "track";
+        let descripcion = "description";
+        const xml = (new DOMParser()).parseFromString(text, 'application/xml');
+        let wayPoints: WayPoint[] = [];
+        if (this.checkErrors(xml)["respuesta"]) {
+             descripcion = xml.getElementsByTagName("description")[0].textContent;
+             name = xml.getElementsByTagName("name")[0].textContent;
+            let puntosXMl = xml.getElementsByTagName("MultiGeometry")[0].getElementsByTagName("LineString")[0].getElementsByTagName("coordinates")[0].textContent;
+            let tuplas = puntosXMl.split(" ");
+            let wpt = xml.getElementsByTagName("Point");
+            for (let i = 0; i < wpt.length; i++) {
+                let cmt = "Waypoint coment";
+                let datos: string[] = wpt[i].getElementsByTagName("coordinates")[0].textContent.split(",");
+                let desc = "Waypoint description";
+                let ele = "0";
+                const lat = datos[1];
+                const lon = datos[0];
+                let nombre = "Waypoint";
+                let time = "noTime";
+                if (datos[2] != undefined)
+                    ele = datos[2];
+                wayPoints.push(new WayPoint(nombre, lat, lon, ele, desc, time, cmt));
+            }
+            for (let i = 0; i < tuplas.length; i++) {
+                const puntoXML = tuplas[i].split(",");
                 const lat = puntoXML[1];
                 const lon = puntoXML[0];
                 let ele = "0";
@@ -223,5 +248,4 @@ export class KMLprocessing implements TrackProcessing {
             return new Track(puntos, this.checkErrors(xml)["error"], "-1", wayPoints);
         }
     }
-
 }
