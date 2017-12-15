@@ -6,6 +6,7 @@ import { Track } from '../model/impl/Track.model';
 import { GPXprocessing } from '../model/impl/processing/GPXprocessing.model';
 import { KMLprocessing } from '../model/impl/processing/KMLprocessing.model';
 import { NotificacionComponent } from '../notificacion/notificacion.component';
+import { Observable } from 'rxjs/Observable';
 
 const processors = {
   "GPX": new GPXprocessing(),
@@ -22,14 +23,36 @@ export class TraductorComponent implements OnInit {
   config: object;
   configSalida: object;
   content: string;
-  @Input() from: string;
-  @Input() to: string;
+  private _from: string;
+  private _to: string;
   message: "Selecciona un formato de entrada y otro de salida";
   mensaje: string;
   salida: string;
   successMessage: boolean = false;
-  @ViewChild(NotificacionComponent) notificacion:NotificacionComponent;
+  @ViewChild(NotificacionComponent) notificacion: NotificacionComponent;
   title = "traductor";
+
+
+  get from(): string {
+    return this._from;
+  }
+
+  @Input()
+  set from(from: string) {
+    this._from = from;
+    this.importCode();
+  }
+
+  get to(): string {
+    return this._to
+  }
+
+  @Input()
+  set to(to: string) {
+    this._to = to;
+    this.importCode();
+  }
+
   constructor() {
     this.config = { lineNumbers: true, mode: 'text/xml', theme: "base16-light" };
     this.configSalida = { lineNumbers: true, mode: 'text/xml', theme: "base16-light", readOnly: true };
@@ -53,10 +76,10 @@ export class TraductorComponent implements OnInit {
       const toProcessor = processors[this.to];
       const fromProcessor = processors[this.from];
       let track: Track = fromProcessor.from(this.content);
-      if(track.nombre!="-1"){
+      if (track.nombre != "-1") {
         this.salida = toProcessor.to(track);
         this.notificacion.openModal();
-      }else{
+      } else {
         this.salida = toProcessor.to(track);
         this.notificacion.closeModal();
       }

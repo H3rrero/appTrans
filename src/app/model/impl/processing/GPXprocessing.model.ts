@@ -90,6 +90,8 @@ ${this.generatePointsXml(track.puntos)}
         }
     }
     generatePointsXml(points: Punto[]): string {
+        console.log("Puntos gpx");
+        console.log(points);
         return points.map((p) => {
             if (p.latitud != undefined)
                 return `                   <trkpt lat="${p.latitud}" lon="${p.longitud}">

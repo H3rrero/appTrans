@@ -7,9 +7,9 @@ export class KMLprocessing implements TrackProcessing {
 
     from(text: string): Track {
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
-        if(xml.getElementsByTagName("gx:coord")[0]!= undefined){
+        if (xml.getElementsByTagName("gx:coord")[0] != undefined) {
             return this.fromFormatNew(text);
-        }else{
+        } else {
             return this.fromFormatOld(text);
         }
     }
@@ -162,7 +162,7 @@ export class KMLprocessing implements TrackProcessing {
         }
     }
 
-    fromFormatNew(text:string){
+    fromFormatNew(text: string) {
         let autor = "anonimo";
         let name = "track";
         let descripcion = "description";
@@ -170,9 +170,10 @@ export class KMLprocessing implements TrackProcessing {
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
         let wayPoints: WayPoint[] = [];
         if (this.checkErrors(xml)["respuesta"]) {
-            console.log(xml.getElementsByTagName("gx:Track")[0].getElementsByTagName("gx:coord"));
-             descripcion = xml.getElementsByTagName("description")[0].textContent;
-             name = xml.getElementsByTagName("name")[0].textContent;
+            if (xml.getElementsByTagName("description")[0] != undefined)
+                descripcion = xml.getElementsByTagName("description")[0].textContent;
+            if (xml.getElementsByTagName("name")[0] != undefined)
+                name = xml.getElementsByTagName("name")[0].textContent;
             let whenPoint = xml.getElementsByTagName("when");
             let coordPoint = xml.getElementsByTagName("gx:Track")[0].getElementsByTagName("gx:coord");
             let wpt = xml.getElementsByTagName("Point");
@@ -184,18 +185,18 @@ export class KMLprocessing implements TrackProcessing {
                 const lat = datos[1];
                 const lon = datos[0];
                 let nombre = "Waypoint";
-                let time = "noTime";
+                let time = "2017-11-02T12:40:35Z";
                 if (datos[2] != undefined)
                     ele = datos[2];
                 wayPoints.push(new WayPoint(nombre, lat, lon, ele, desc, time, cmt));
             }
             for (let i = 0; i < coordPoint.length; i++) {
-                const puntoXML = coordPoint[i].textContent.split(" ");
+                const puntoXML = coordPoint[i].textContent.split(",");
                 const lat = puntoXML[1];
                 const lon = puntoXML[0];
                 let ele = "0";
-                let time = "noTime";
-                if(whenPoint[i] != undefined)
+                let time = "2017-11-02T12:40:35Z";
+                if (whenPoint[i] != undefined)
                     time = whenPoint[i].textContent;
                 if (puntoXML[2] != undefined)
                     ele = puntoXML[2];
@@ -215,8 +216,8 @@ export class KMLprocessing implements TrackProcessing {
         const xml = (new DOMParser()).parseFromString(text, 'application/xml');
         let wayPoints: WayPoint[] = [];
         if (this.checkErrors(xml)["respuesta"]) {
-             descripcion = xml.getElementsByTagName("description")[0].textContent;
-             name = xml.getElementsByTagName("name")[0].textContent;
+            descripcion = xml.getElementsByTagName("description")[0].textContent;
+            name = xml.getElementsByTagName("name")[0].textContent;
             let puntosXMl = xml.getElementsByTagName("MultiGeometry")[0].getElementsByTagName("LineString")[0].getElementsByTagName("coordinates")[0].textContent;
             let tuplas = puntosXMl.split(" ");
             let wpt = xml.getElementsByTagName("Point");

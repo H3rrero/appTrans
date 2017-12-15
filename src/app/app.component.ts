@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { TraductorComponent } from './traductor/traductor.component';
+import { timeout } from 'q';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +9,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  from:string;
-  to:string;
-
+  from: string;
+  to: string;
+  @ViewChild(TraductorComponent) traductor: TraductorComponent;
   onSelectFrom(from) {
-    this.from=from;
+    this.from = from;
   }
-  onSelectTo(to){
-    this.to=to;
+  onSelectTo(to) {
+    this.to = to;
   }
 }
