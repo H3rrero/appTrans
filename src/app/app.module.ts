@@ -19,7 +19,7 @@ import { CodemirrorModule } from 'ng2-codemirror';
   imports: [
     BrowserModule,
     FormsModule,
-    CodemirrorModule
+    CodemirrorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

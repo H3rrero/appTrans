@@ -1,3 +1,5 @@
 <app-notificacion [isShown]="show" [mensaje]="mensaje"></app-notificacion>
+<div (drop)="onDrop($event)" (dragover)="onDragOver($event)">
 <codemirror [(ngModel)]="content" [config]="config" (ngModelChange)="importCode()" ></codemirror>
+</div>
 <codemirror [(ngModel)]="salida" [config]="configSalida" ></codemirror>

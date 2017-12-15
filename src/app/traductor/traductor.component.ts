@@ -57,8 +57,11 @@ export class TraductorComponent implements OnInit {
     this.config = { lineNumbers: true, mode: 'text/xml', theme: "base16-light" };
     this.configSalida = { lineNumbers: true, mode: 'text/xml', theme: "base16-light", readOnly: true };
     this.content =
-      `    Selecciona un formato de entrada, uno de salida y luego pega aquí la entrada.
-    Select an input format, an output format, and then paste the entry here.`
+      `    Selecciona un formato de entrada, uno de salida y luego pega aquí la entrada 
+      o arrastra y suelta el fichero.
+      
+    Select an input format, an output format,and then paste the entry here
+     or drag and drop the file.`
     this.salida =
       `    Aquí veras la salida.
     Here you will see the result.`
@@ -84,6 +87,23 @@ export class TraductorComponent implements OnInit {
         this.notificacion.closeModal();
       }
     }
+  }
+  onDrop(event){
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("onDrop",event.dataTransfer.files[0]);
+    var myReader:FileReader = new FileReader();
+    myReader.readAsText(event.dataTransfer.files[0]);
+    
+    myReader.onloadend = (e)=>{
+      this.content =myReader.result;
+      this.importCode();
+    }
+  }
+  onDragOver(event){
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("onDragOver", event);
   }
 
 }
