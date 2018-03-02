@@ -1,3 +1,4 @@
+<app-openmenu [isShown]="show" ></app-openmenu>
 <app-notificacion [isShown]="show" [mensaje]="mensaje"></app-notificacion>
 <div (drop)="onDrop($event)" (dragover)="onDragOver($event)">
 <codemirror [(ngModel)]="content" [config]="config" (ngModelChange)="importCode()" ></codemirror>

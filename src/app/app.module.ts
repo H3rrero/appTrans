@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { SelectComponent } from './select/select.component';
 import { TraductorComponent } from './traductor/traductor.component';
 import { NotificacionComponent } from './notificacion/notificacion.component';
+import { OpenMenuComponent } from './responsiveMenu/openmenu.component';
 import { CodemirrorModule } from 'ng2-codemirror';
 
 
@@ -14,7 +15,9 @@ import { CodemirrorModule } from 'ng2-codemirror';
     AppComponent,
     SelectComponent,
     TraductorComponent,
-    NotificacionComponent
+    NotificacionComponent,
+    OpenMenuComponent
+
   ],
   imports: [
     BrowserModule,

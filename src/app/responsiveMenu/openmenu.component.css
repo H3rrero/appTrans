@@ -1,0 +1,39 @@
+.notifica{
+
+    background: rgb(75, 78, 79);
+	content:'\f0a9';
+	border-bottom-right-radius: 40px;
+    border-top-right-radius: 40px;
+	box-shadow: rgba(0, 0, 0, 0.5) -1px 0px 2px 0px;
+	color: white;
+	font: normal normal normal 25px/1 FontAwesome;
+	height:80px;
+	line-height:80px;
+	opacity:0.9;
+	padding-left:40px;
+    position: fixed;
+	text-align:left;
+	text-rendering: auto;
+    top: 45%;
+    width:80px;
+    -webkit-font-smoothing: antialiased;
+    z-index: 9;
+}
+.leftDesk{
+    left: -200px;
+}
+.leftOut{
+    left:-30px !important;
+}
+.leftIn{
+    left: 170px !important;
+}
+.icon{
+    line-height: 60px;
+    font-size: 30px;
+}
+@media only screen and (max-width: 500px){
+   .notifica{
+       left: -30px;
+   }
+    }

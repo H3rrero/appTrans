@@ -12,7 +12,6 @@ app-select {
   background-color: rgb(255, 255, 255);
   box-shadow: 3px 0 5px rgba(30, 30, 30, 0.35);
   height: 100%;
-  left: 0;
   overflow-x: hidden;
   padding-top: 20px;
   position: fixed;
@@ -30,10 +29,40 @@ app-select {
   height: 100vh;
   width: 87vw ;
 }
-
+.desk{
+  left:0px;
+}
+.oculta{
+  left:-210px !important;
+}
+.visible{
+  left:0 !important;
+}
+@media only screen and (max-width: 500px){
+  .sidenav{
+    left: -200px;
+  }
+  .editor{
+    margin-left: 0px;
+    width: 100%;
+  }
+  .traductor{
+    display: flex;
+    flex-direction: column;
+  }
+}
 @media screen and (max-height: 450px) {
-  .sidenav {
+  .sidenav{
+    left: -200px;
     padding-top: 15px;
+  }
+  .editor{
+    margin-left: 0px;
+    width: 100%;
+  }
+  .traductor{
+    display: flex;
+    flex-direction: column;
   }
   .sidenav a {
     font-size: 18px;

@@ -3,3 +3,13 @@
     width: 50%;
     height: 100vh;
 }
+
+@media only screen and (max-width: 500px){
+    :host ::ng-deep .CodeMirror{
+        float: inherit;
+        width: 100vw;
+        height: 50vh;
+    }
+    
+}
+

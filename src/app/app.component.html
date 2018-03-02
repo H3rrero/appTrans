@@ -1,8 +1,7 @@
-<div class="sidenav" >
+<div class="sidenav desk" >
     <app-select title="Lenguaje de entrada" [leng]="['GPX','KML']"  [selectedValue]="'From'" (onSelect)="onSelectFrom($event)"></app-select>
     <app-select title="Lenguaje de salida" [leng]="['GPX','KML']" [selectedValue]="'To'" (onSelect)="onSelectTo($event)"></app-select>
 </div>
 <main class="editor">
-   
     <app-traductor class="traductor" [from]="from" [to]="to"></app-traductor>
 </main>
