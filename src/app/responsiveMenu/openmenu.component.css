@@ -24,9 +24,11 @@
 }
 .leftOut{
     left:-30px !important;
+    transition: all 0.5s linear;
 }
 .leftIn{
     left: 170px !important;
+    transition: all 0.5s linear;
 }
 .icon{
     line-height: 60px;
